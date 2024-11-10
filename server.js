@@ -84,26 +84,24 @@
 // console.log(json)
 
 const express = require('express')
-const app = express()
+const app = express(); 
+const db = require('./db')
+const menuItem = require("./models/menu")
+const person = require("./models/person")
+const bodyParser = require("body-parser")
+app.use(bodyParser.json())
+
 
 app.get('/', function (req, res) {
-  res.send('welcome to my first server.... How can i help you?')
+  try{res.send('welcome to my first server.... How can i help you?')}catch(err){console.log("error -> ", err)}
 })
 
-app.get('/Node', (req, res) => {
-    let custom = {
-        name: "Node js",
-        city: "washington",
-        is_reactjs: true,
-        is_reactnative: false,
-    }
-    res.send(custom)
-  })
+const personRoutes = require("./routes/personRoutes")
+const menuitemRoutes = require("./routes/menuitemRoutes")
 
-  app.get('/React', (req, res) => {
-    res.send('welcome to my first React Node js server')
-  })
+app.use("/person", personRoutes);
+app.use("/menu", menuitemRoutes);
 
-app.listen(3000, () =>{
-    console.log("listening on port 3000")
+app.listen(8000, () =>{
+    console.log("listening on port :: 8000")
 })
