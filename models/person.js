@@ -34,6 +34,16 @@ const personSchema = new mongoose.Schema({
  sallery:{
     type:Number,
     required:true
+ },
+
+ userName:{
+   type:String,
+   required:true
+ },
+
+ password:{
+   type:String,
+   required: true
  }
 })
 
