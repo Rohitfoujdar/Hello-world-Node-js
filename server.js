@@ -86,12 +86,9 @@
 const express = require('express')
 const app = express(); 
 const db = require('./db')
-// const person = require("./models/person")
+const passport = require("./auth")
 const bodyParser = require("body-parser")
 app.use(bodyParser.json())
-const passport = require("passport")
-const localStrategy = require("passport-local").Strategy;
-
 
 
 const logRequest = (req, res, next)=>{
@@ -101,35 +98,17 @@ const logRequest = (req, res, next)=>{
 
 app.use(logRequest);
 
-passport.use(new localStrategy(async(username, Password, done)=>{
-    try{
-       console.log("Recieved credentials", username, Password)
-       const user = await person.findOne({userName: username})
-      if(!user)
-        return done(null, false, {message: "Incorrect Username."}) 
-
-      const isPasswordMatch = user.password == Password ? true : false;
-      if(isPasswordMatch){
-        return done(null, user,)
-      }else{
-        return done({message: "Incorrect Password"})
-      }
-    }
-    catch(error){
-       return done(error);
-    }
-}))
 
 app.use(passport.initialize())
-
-app.get('/',passport.authenticate("lacal", {session: false}),function (req, res) {
+const localAuthMiddleware = passport.authenticate("local", {session: false}) 
+app.get('/',function (req, res) {
   try{res.send('welcome to my first server.... How can i help you?')}catch(err){console.log("error -> ", err)}
 })
 
 const personRoutes = require("./routes/personRoutes")
 const menuitemRoutes = require("./routes/menuitemRoutes")
 
-app.use("/person", personRoutes);
+app.use("/person",localAuthMiddleware, personRoutes);
 app.use("/menu", menuitemRoutes);
 
 app.listen(8000, () =>{
