@@ -102,7 +102,12 @@ app.use(logRequest);
 app.use(passport.initialize())
 const localAuthMiddleware = passport.authenticate("local", {session: false}) 
 app.get('/',function (req, res) {
-  try{res.send('welcome to my first server.... How can i help you?')}catch(err){console.log("error -> ", err)}
+  try{
+    res.send('welcome to my first server.... How can i help you?')
+  }
+  catch(err){
+   console.log("error -> ", err)
+  }
 })
 
 const personRoutes = require("./routes/personRoutes")
