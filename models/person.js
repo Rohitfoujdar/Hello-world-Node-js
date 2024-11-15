@@ -45,7 +45,9 @@ const personSchema = new mongoose.Schema({
  password:{
    type:String,
    required: true
- }
+ },
+
+ 
 })
 
 personSchema.pre("save", async function(next){
