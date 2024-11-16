@@ -89,6 +89,8 @@ const db = require('./db')
 const passport = require("./auth")
 const bodyParser = require("body-parser")
 app.use(bodyParser.json())
+require('dotenv').config();
+
 
 
 const logRequest = (req, res, next)=>{
@@ -113,8 +115,8 @@ app.get('/',function (req, res) {
 const personRoutes = require("./routes/personRoutes")
 const menuitemRoutes = require("./routes/menuitemRoutes")
 
-app.use("/person",localAuthMiddleware, personRoutes);
-app.use("/menu",localAuthMiddleware, menuitemRoutes);
+app.use("/person", personRoutes);
+app.use("/menu",menuitemRoutes);
 
 app.listen(8000, () =>{
     console.log("listening on port :: 8000")
